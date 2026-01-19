@@ -1,46 +1,51 @@
-import sys
 from collections import deque
 
-m,n = map(int,sys.stdin.readline().split()) # m : 가로(열), n: 세로 (행)
-graph = [[] for _ in range(n)]
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-cnt = 0
+m,n = map(int, input().split()) # 가로, 세로 수
+#  정수 1은 익은 토마토, 정수 0은 익지 않은 토마토, 정수 -1은 토마토가 들어있지 않은 칸을 나타낸다.
+dx = [0,0,-1,1]
+dy = [-1,1,0,0]
 
-# 입력 받기
-for i in range(n):
-    graph[i] = list(map(int, sys.stdin.readline().split()))
+graph = []
+visited = [[False]*m for _ in range(n)]
+
+for _ in range(n) :
+    graph.append(list(map(int, input().split())))
 
 def bfs():
-    queue = deque()
+    
+    while queue:
+        x,y = queue.popleft()
 
-    # 익은 토마토 위치 찾기    
-    for j in range(n):
-        for i in range(m):
-            if graph[j][i] == 1 :
-                queue.append((j,i))
-
-    while queue :
-
-        ddy, ddx = queue.popleft()
         for i in range(4):
-            nx = dx[i] + ddx
-            ny = dy[i] + ddy
+            nx = dx[i] + x
+            ny = dy[i] + y
 
-            if 0 <= nx < m and 0 <= ny < n :
-                if  graph[ny][nx] == 0:
-                    graph[ny][nx] = graph[ddy][ddx] +1
-                    queue.append((ny,nx))
+            if 0<=nx<n and 0<=ny<m and visited[nx][ny] == False and graph[nx][ny] == 0:
+                visited[nx][ny] = True
+                queue.append((nx,ny))
+                graph[nx][ny] = graph[x][y] + 1
+    
+                
+    
+queue = deque()
 
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == 1 and not visited[i][j]:
+            queue.append((i,j))
+            visited[i][j] = 1
+
+        if graph[i][j] == -1 and not visited[i][j]:
+            visited[i][j] = True
 
 bfs()
-cnt = 0
-for j in range(n):
-    for i in range(m):
-        if graph[j][i] == 0:
-                print(-1)
-                sys.exit(0)
-            
-        cnt = max(cnt, graph[j][i])
-print(cnt-1)
-            
+
+result = 0
+for row in graph:
+    for val in row:
+        if val == 0:
+            print(-1)
+            exit()
+    result = max(result, max(row))
+
+print(result-1)
