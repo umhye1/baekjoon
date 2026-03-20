@@ -1,36 +1,28 @@
-n= int(input())
-n_array= list(map(int,input().split()))
-n_array.sort()
+def binary_search(array,target):
+    left = 0
+    right = len(array)-1
 
-m = int(input())
-m_array=list(map(int,input().split()))
-
-
-def binary_search(target,data):
-    start=0
-    end=len(data)-1
-
-    while start<=end:
-        mid= (start+end)//2
-
-        if data[mid] == target:
+    while left <= right:
+        mid = (left+right)//2
+    
+        if array[mid] == target:
             print(1)
-            break
-        
-        elif data[mid] > target:
-            end=mid-1
-            continue
+            return mid
+        elif array[mid]<target:
+            left = mid+1
 
-        elif data[mid] < target:
-            start = mid+1
-            continue      
-   
-    if start>end:
-        print(0)
+        else:
+            right = mid-1
+    print(0)
+    return -1
 
+n = int(input())
+a = list(map(int, input().split()))
+a.sort()
+m = int(input())
+b = list(map(int, input().split()))
 
+for i in range(len(b)):
+    binary_search(a,b[i])
 
-for i in range(m):
-
-    binary_search(m_array[i],n_array)
 
