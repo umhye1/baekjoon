@@ -1,28 +1,30 @@
-def binary_search(array,target):
+# 정렬 중에 가장 빠른 거 - binary search이용
+n = int(input())
+nlist = list(map(int, input().split()))
+m = int(input())
+mlist = list(map(int,input().split()))
+
+# nlist sort함
+nlist.sort()
+
+def search(arr, tar):
     left = 0
-    right = len(array)-1
+    right = len(arr)-1
 
     while left <= right:
-        mid = (left+right)//2
-    
-        if array[mid] == target:
+        mid = (left + right)//2
+        if arr[mid] == tar:
             print(1)
             return mid
-        elif array[mid]<target:
-            left = mid+1
 
+        elif arr[mid]< tar:
+            left = mid +1
+        
         else:
             right = mid-1
     print(0)
     return -1
 
-n = int(input())
-a = list(map(int, input().split()))
-a.sort()
-m = int(input())
-b = list(map(int, input().split()))
 
-for i in range(len(b)):
-    binary_search(a,b[i])
-
-
+for i in range(m):
+    search(nlist,mlist[i])
