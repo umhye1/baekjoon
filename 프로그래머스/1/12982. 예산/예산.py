@@ -1,9 +1,14 @@
 def solution(d, budget):
-    d_sort = sorted(d)
-    answer = 0
     
-    for i in d_sort:
-        if budget - i >= 0:
-            budget -= i
-            answer += 1
-    return answer
+    # 최대한 많은 부서에게 지원 - sort()
+    d.sort()
+    count = 0
+    
+    for i in range(len(d)):
+        if budget - d[i] >= 0:
+            budget -= d[i]
+            count += 1
+        
+    
+    
+    return count
