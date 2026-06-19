@@ -1,33 +1,33 @@
-import math
+# queue로 구현
 
 def solution(progresses, speeds):
     answer = []
-    daylist = []
+    time = 0
+    count = 0 
     
-    # 1. 각 기능마다 완료까지 걸리는 일수 계산
-    for i in range(len(progresses)):
-        # (100 - 현재진도) / 속도 를 올림(ceil)하면 필요한 일수가 나옵니다.
-        days = math.ceil((100-progresses[i])/speeds[i])
-        daylist.append(days)
-
+    # 순서대로 처리하기 위해 인덱스로 접근
+    idx = 0
+    n = len(progresses)
+    
+    while idx < n :
+        # 기능 개발 완료되었는지 확인
+        if (progresses[idx] + time * speeds[idx]) >= 100 :
+            count += 1 # 기능 수  += 1
+            idx += 1  # 다음 기능으로 이동하기 위해 인덱스 +1 해줌
         
-    # 2. 앞의 기능이 끝날 때 함께 배포될 기능들 그룹화
-    # 기준일 (max_day) 초기화 : 첫 배포일
-    max_day = daylist[0]
-    count = 1    
+        else : 
+            # count를 초기화 하지않고 기능개발 완료,
+            # 인덱스 +1 해서 다음 기능으로 넘어갔기 때문에, 
+            # 기존에 쌓여있떤 count를 일단 넘겨줘서 배포해야함
+            if count > 0 :
+                answer.append(count)
+                count = 0 # 초기화 (기능 수 )
+            
+            # 기능 개발 완료 안된 경우 : 시간 +1하기
+            time += 1 
     
-    for i in range(1,len(daylist)):
-
-        # 기준일(max_day)보다 일찍 끝나거나 같은 날 끝나면 함께 배포
-        if max_day >= daylist[i]:
-            count += 1
-        
-        # 기준일보다 오래 걸리는 기능을 만나면 (예: 9일)
-        else:
-            answer.append(count) # 지금까지 모인 기능 배포 
-            max_day = daylist[i] # 새로운 기준일을 9일로 갱신
-            count = 1
-    
-    # 루프가 끝난 뒤 마지막으로 남아있던 그룹을 넣어줍니다!
+    # 마지막으로 남은 기능 배포
     answer.append(count)
+    
+    
     return answer
