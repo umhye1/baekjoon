@@ -1,10 +1,11 @@
-numlist = ["zero","one","two","three","four","five","six","seven","eight","nine","ten"]
-
+# 입력 변환 → 상태/인덱스 정의 → 조건을 작은 함수로 분리 → 예외 케이스 확인
 def solution(s):
+    numlist = ['zero','one','two','three','four','five','six','seven','eight','nine']
     
-    for i in range(len(numlist)):
-        s = s.replace(numlist[i],str(i))
-        
-            
-    answer = int(s)
-    return answer
+    
+    for index, value in enumerate(numlist, start = 0):
+        idx = str(index)
+        s = s.replace(value,idx)
+    
+    s = int(s)
+    return s
