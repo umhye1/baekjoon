@@ -16,36 +16,37 @@ def solution(rows, columns, queries):
     # 시계방향 회전
     def rotate(query):
         x1, y1, x2, y2 = query[0]-1, query[1]-1, query[2]-1, query[3]-1 
-        change = []
+        a = graph[x1][y1]
+        min_num = a
         
         
         # 아래로 이동하면서 당겨오기 x1 -> x2
         for i in range(x1,x2):
-            change.append(graph[i][y1])
             graph[i][y1] = graph[i+1][y1]
+            min_num = min(min_num,graph[i][y1])
         
     
 
         # 오른쪽으로 이동하면서 당겨오기 y1-> y2
         for i in range(y1,y2):
-            change.append(graph[x2][i])
             graph[x2][i] = graph[x2][i+1]
+            min_num = min(min_num,graph[x2][i])
         
             
         # 위로 이동하면서 당겨오기 x2 -> x1
         for i in range(x2,x1,-1):
-            change.append(graph[i][y2])
             graph[i][y2] = graph[i-1][y2]
+            min_num = min(min_num,graph[i][y2])
             
             
         # 왼쪽으로 이동하면서 당겨오기 y2 -> y1
         for i in range(y2,y1,-1):
-            change.append(graph[x1][i])
             graph[x1][i] = graph[x1][i-1]
+            min_num = min(min_num,graph[x1][i])
         
-        graph[x1][y1+1] = change[0]
+        graph[x1][y1+1] = a
         
-        return min(change)
+        return min_num
         
     
     # queries 돌면서 x1,y1 ~ x2,y2범위의 애들만 시계방향 회전
