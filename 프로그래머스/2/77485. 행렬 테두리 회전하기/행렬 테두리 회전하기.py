@@ -19,58 +19,34 @@ def solution(rows, columns, queries):
         change = []
         
         
-        # 시계방향으로 받아오기 : 오 -> 아 -> 왼 -> 위
-
-        # 1. 오른쪽으로 이동
-        for i in range(y1, y2):
-            change.append(graph[x1][i])
-        
-            
-        # 2. 아래로 이동
-        for i in range(x1, x2):
-            change.append(graph[i][y2])
-            
-            
-        # 3. 왼쪽으로 이동 
-        for i in range(y2, y1, -1):
-            change.append(graph[x2][i])
-        
-        
-        # 4. 위로 이동
-        for i in range(x2, x1, -1):
+        # 아래로 이동하면서 당겨오기 x1 -> x2
+        for i in range(x1,x2):
             change.append(graph[i][y1])
-            
+            graph[i][y1] = graph[i+1][y1]
         
-        # 한 칸 이동 
-        # change[-1]은 원소 하나라서 []로 묶어주기 - 리스트 변환
-        change = [change[-1]] + change[:-1]
-        
-        idx = 0
-        
-        # 1. 오른쪽으로 이동
-        for i in range(y1, y2):
-            graph[x1][i] = change[idx]
-            idx += 1
+    
+
+        # 오른쪽으로 이동하면서 당겨오기 y1-> y2
+        for i in range(y1,y2):
+            change.append(graph[x2][i])
+            graph[x2][i] = graph[x2][i+1]
         
             
-        # 2. 아래로 이동
-        for i in range(x1, x2):
-            graph[i][y2] = change[idx]
-            idx += 1
+        # 위로 이동하면서 당겨오기 x2 -> x1
+        for i in range(x2,x1,-1):
+            change.append(graph[i][y2])
+            graph[i][y2] = graph[i-1][y2]
             
             
-        # 3. 왼쪽으로 이동 
-        for i in range(y2, y1, -1):
-            graph[x2][i] = change[idx]
-            idx += 1
+        # 왼쪽으로 이동하면서 당겨오기 y2 -> y1
+        for i in range(y2,y1,-1):
+            change.append(graph[x1][i])
+            graph[x1][i] = graph[x1][i-1]
         
-        
-        # 4. 위로 이동
-        for i in range(x2, x1, -1):
-            graph[i][y1] = change[idx]
-            idx += 1
+        graph[x1][y1+1] = change[0]
         
         return min(change)
+        
     
     # queries 돌면서 x1,y1 ~ x2,y2범위의 애들만 시계방향 회전
     for i in queries:
