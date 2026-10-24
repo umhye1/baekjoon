@@ -39,7 +39,7 @@ def solution(info, edges):
                 answer = max(nxt_sheep, answer)
                 
                 # 다음에 갈 수 있는 노드 갱신
-                nxt_nodes2 = [n for n in nxt_nodes1 if n != nxt] + graph[nxt]
+                nxt_nodes2 = [x for x in nxt_nodes1 if x != nxt] + graph[nxt]
                 q.append((cur, nxt_sheep, nxt_wolf, nxt_nodes2))
                     
 
