@@ -1,22 +1,20 @@
-import math
-
 def solution(progresses, speeds):
     answer = []
-    days = [0]*len(progresses) # 기능 개발 완료까지 걸리는 일 수 
     
-    for i in range(len(progresses)):
-        num = math.ceil((100 - progresses[i])/speeds[i] )
-            
-        days[i] = num
+    # 배포일
+    time = [(100-p+s-1)//s for p,s in zip(progresses,speeds)]
+    
+    max_day = time[0]
+    count = 0 # 해당 날짜에 몇개의 기능을 같이 배포?
+    
+    for t in time :
+        if t <= max_day : 
+            count += 1 
         
-    max_day = days[0]
-    count = 1 # 배포할 기능 수
-    for i in range(1,len(progresses)):
-        if days[i] <= max_day:
-            count += 1
         else :
+            max_day = t
             answer.append(count)
             count = 1
-            max_day = days[i]
+            
     answer.append(count)
     return answer
