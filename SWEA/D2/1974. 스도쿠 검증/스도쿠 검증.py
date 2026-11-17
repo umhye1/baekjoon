@@ -1,54 +1,39 @@
-T = int(input())
-# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
+def find(x):
+    # 가로
+    if len(set(graph[x])) != 9:
+        return False
+        
+    # 세로
+    cgraph = set()
+    for i in range(9):
+        cgraph.add(graph[i][x])
 
-def check_rows(graph):
+    if len(cgraph) != 9:
+        return False
+
+    # 3*3
+    tgraph = set()
+    for i in range(3):
+        for j in range(3):
+            #row_start = (x // 한_줄의_상자_개수) * 상자_높이
+            #col_start = (x % 한_줄의_상자_개수) * 상자_너비
+            tgraph.add(graph[(x//3)*3+i][(x%3)*3+j])
+    
+    if len(tgraph) != 9:
+            return False
+
+    return True
+
+
+
+T = int(input())
+for test_case in range(1, T + 1):
+    graph = [list(map(int, input().split())) for _ in range(9)]
+    answer = 1 # 겹치는 숫자가 없을 경우
 
     for i in range(9):
-        rowlist = set(graph[i])
+        if not find(i):
+            answer = 0
+            break
 
-        if len(rowlist)!=9:
-            return 0
-
-    return 1
-
-
-def check_cols(graph):
-    for j in range(9):
-        collist = []
-        for i in range(9):
-            collist.append(graph[i][j])
-
-        colset =  set(collist)
-        if len(colset) != 9:
-            return 0
-
-    return 1
-
-
-
-def check_three(graph):
-    for row_start in range(0,9,3):
-        for col_start in range(0,9,3):
-            boxlist= []
-            for j in range(3):
-                for i in range(3):
-                    boxlist.append(graph[row_start+i][col_start+j])
-
-            boxset = set(boxlist)
-            if len(boxset) != 9:
-                return 0
-
-    return 1
-
-for test_case in range(1, T + 1):
-
-    x, y = 0, 0
-    graph = [list(map(int, input().split())) for _ in range(9)]
-    # ///////////////////////////////////////////////////////////////////////////////////
-
-    if check_rows(graph) and check_cols(graph) and check_three(graph):
-        print(f"#{test_case} 1")
-
-    else:
-        print(f"#{test_case} 0")
-
+    print(f"#{test_case} {answer}")
