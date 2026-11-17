@@ -1,13 +1,30 @@
+def solup(n):
+    ans = 0
+    mid = n//2
+    for i in range(mid):
+        for j in range(mid-i, mid+i+1):
+            ans += graph[i][j]
+
+    return ans
+   
+def soldown(n):
+    ans = 0
+    mid = n//2
+    for i in range(mid):
+        for j in range(mid-i, mid+i+1):
+            ans += graph[n-1-i][j]
+    return ans
+
 T = int(input())
+# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
+for test_case in range(1, T + 1):
+   n = int(input())
+   graph = [list(map(int,input().strip())) for _ in range(n)]
 
-for case in range(1, T + 1):
-    N = int(input())
-    graphs = [list(map(int, input())) for _ in range(N)]
+   # 중간 부분 5//2 =2
+   answer = sum(graph[n//2])
+   answer += solup(n)
+   answer += soldown(n)
+   
+   print(f"#{test_case} {answer}")
 
-    answer = 0
-
-    for i in range(N // 2): # 중간 전 까지만 (위와 아래의 범위가 같으니까)
-        answer += sum(graphs[i][N // 2 - i : N // 2 + i + 1]) # 위쪽 그래프
-        answer += sum(graphs[N - i - 1][N // 2 - i:N // 2 + i + 1]) # 아래쪽 그래프
-
-    print(f"#{case} {answer + sum(graphs[N // 2])}") # graphs[N // 2] 는 한가운데의 값들
