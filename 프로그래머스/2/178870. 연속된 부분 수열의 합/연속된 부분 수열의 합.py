@@ -1,25 +1,32 @@
 def solution(sequence, k):
-    
     answer = []
-    left = 0
-    current_sum = 0
-    min_len = float('inf')
+    # 투포인터
+    # total < k right를 +=
+    # total > k left -=
+
+    min_length = 1000000000000000
+    left, right = 0, 0
+    total = sequence[0]
     
-    
-    for right in range(len(sequence)):
-        current_sum += sequence[right]
+    while left <= right and right < len(sequence):
         
-        while current_sum > k :
-            current_sum -= sequence[left]
+        if total == k:
+            length = right - left + 1 
+            
+            if length < min_length: # 더 짧은거 받기
+                min_length = length
+                answer = [left, right]
+                
+        if total < k:
+            right += 1
+            
+            if right >= len(sequence):
+                break
+            
+            total += sequence[right]
+        
+        else :
+            total -= sequence[left]
             left += 1
-        
-        if current_sum == k :
-            current_len = right - left + 1
             
-            if current_len < min_len:
-                min_len = current_len
-                answer = [left,right]
-            
-        
-    
     return answer
